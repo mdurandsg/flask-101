@@ -35,3 +35,16 @@ class TestViews(TestCase):
         #print(response)
         self.assertEqual(response.status, "201 CREATED")
 
+    def test_update_product_by_id(self):
+        response = self.client.patch("/api/v1/products/3",
+                                     data=json.dumps(dict(id=3, name='patch_toto')),
+                                     content_type="application/json")
+        print(response)
+        self.assertEqual(response.status, "204 NO CONTENT")
+
+    def test_update_product_by_id_empty(self):
+        response = self.client.patch("/api/v1/products/3",
+                                     data=json.dumps(dict(id=3, name='')),
+                                     content_type="application/json")
+        print(response)
+        self.assertEqual(response.status, "422 UNPROCESSABLE ENTITY")
