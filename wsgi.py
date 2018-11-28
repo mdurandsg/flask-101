@@ -5,14 +5,19 @@ app = Flask(__name__)
 def hello():
     return "Hello World! I'm happy."
 
-@app.route('/api/v1/products')
-def get_products():
+@app.route('/api/v1/products', methods=['GET', 'POST'])
+def products():
     PRODUCTS = [
         { 'id': 1, 'name': 'Skello' },
         { 'id': 2, 'name': 'Socialive.tv' },
         { 'id': 3, 'name': 'toto'}
     ]
-    return jsonify(PRODUCTS)
+    if request.method == 'GET':
+        return jsonify(PRODUCTS)
+    else:
+        result = request.get_json()
+        PRODUCTS.append(result)
+        return jsonify(PRODUCTS), 201
 
 @app.route('/api/v1/products/<int:id>', methods=['GET', 'DELETE'])
 def product_by_id(id):
