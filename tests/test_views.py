@@ -22,3 +22,8 @@ class TestViews(TestCase):
         response = self.client.get("/api/v1/products/10")
         self.assertEqual(response.status, "404 NOT FOUND")
 
+    def test_delete_product_by_id(self):
+        response = self.client.delete("/api/v1/products/3")
+        print(response)
+        self.assertEqual(response.status, "204 NO CONTENT")
+
