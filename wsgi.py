@@ -19,7 +19,7 @@ def products():
         PRODUCTS.append(result)
         return jsonify(PRODUCTS), 201
 
-@app.route('/api/v1/products/<int:id>', methods=['GET', 'DELETE'])
+@app.route('/api/v1/products/<int:id>', methods=['GET', 'DELETE', 'PATCH'])
 def product_by_id(id):
     PRODUCTS = [
         { 'id': 1, 'name': 'Skello' },
@@ -32,7 +32,16 @@ def product_by_id(id):
             return jsonify(PRODUCTS[index]), 200
         else:
             abort(404)
-    else:
+    elif request.method == 'DELETE':
         del PRODUCTS[index]
         #print(PRODUCTS)
         return jsonify(""), 204
+    else:
+        result = request.get_json()
+        if result["name"]:
+            PRODUCTS[index]["name"] = result["name"]
+            print(PRODUCTS)
+            return jsonify(PRODUCTS[index]), 204
+        else:
+            print(PRODUCTS)
+            abort(422)
